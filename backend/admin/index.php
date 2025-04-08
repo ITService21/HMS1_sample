@@ -1,30 +1,26 @@
 <?php
-    session_start();
-    include('assets/inc/config.php');//get configuration file
-    if(isset($_POST['admin_login']))
-    {
-        $ad_email=$_POST['ad_email'];
-        $ad_pwd=sha1(md5($_POST['ad_pwd']));//double encrypt to increase security
-        $stmt=$mysqli->prepare("SELECT ad_email ,ad_pwd , ad_id FROM his_admin WHERE ad_email=? AND ad_pwd=? ");//sql to log in user
-        $stmt->bind_param('ss',$ad_email,$ad_pwd);//bind fetched parameters
-        $stmt->execute();//execute bind
-        $stmt -> bind_result($ad_email,$ad_pwd,$ad_id);//bind result
-        $rs=$stmt->fetch();
-        $_SESSION['ad_id']=$ad_id;//Assign session to admin id
-        //$uip=$_SERVER['REMOTE_ADDR'];
-        //$ldate=date('d/m/Y h:i:s', time());
-        if($rs)
-            {//if its sucessfull
-                header("location:his_admin_dashboard.php");
-            }
+session_start();
+include('assets/inc/config.php'); // Get configuration file
 
-        else
-            {
-            #echo "<script>alert('Access Denied Please Check Your Credentials');</script>";
-                $err = "Access Denied Please Check Your Credentials";
-            }
+if (isset($_POST['admin_login'])) {
+    $ad_email = $_POST['ad_email'];
+    $ad_pwd = $_POST['ad_pwd']; // No hashing here
+
+    $stmt = $mysqli->prepare("SELECT ad_email, ad_pwd, ad_id FROM his_admin WHERE ad_email=? AND ad_pwd=?");
+    $stmt->bind_param('ss', $ad_email, $ad_pwd); // Bind plain text values
+    $stmt->execute(); // Execute
+    $stmt->bind_result($ad_email, $ad_pwd, $ad_id); // Bind results
+    $rs = $stmt->fetch();
+
+    if ($rs) {
+        $_SESSION['ad_id'] = $ad_id;
+        header("location:his_admin_dashboard.php");
+    } else {
+        $err = "Access Denied. Please Check Your Credentials.";
     }
+}
 ?>
+
 <!--End Login-->
 <!DOCTYPE html>
 <html lang="en">
