@@ -1,0 +1,22 @@
+# Ignore environment variable file (contains secrets)
+.env
+
+# Ignore Composer dependencies (optional if you're pushing the vendor folder)
+vendor/
+
+# Ignore Composer lock file if you're not locking dependencies
+composer.lock
+
+# Ignore OS/system files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore IDE/editor config
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.env
